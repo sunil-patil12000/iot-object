@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .upload-container {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        #preview {
+            max-width: 100%;
+            max-height: 400px;
+            margin: 10px auto;
+            display: none;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Object Detection Demo</h1>
+    
+    <div class="upload-container">
+        <h2>Upload an image</h2>
+        
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        <form action="/detect" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" id="imageInput" accept="image/*" onchange="previewImage()">
+            <br>
+            <img id="preview" src="#" alt="Image preview">
+            <br>
+            <button type="submit" class="button">Detect Objects</button>
+        </form>
+    </div>
+    
+    <script>
+        function previewImage() {
+            var preview = document.getElementById('preview');
+            var file = document.getElementById('imageInput').files[0];
+            var reader = new FileReader();
+            
+            reader.onloadend = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block';
+            }
+            
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

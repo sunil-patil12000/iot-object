@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .results-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .image-container {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .objects-list {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .object-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .object-item:last-child {
+            border-bottom: none;
+        }
+        .object-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .confidence {
+            color: #7f8c8d;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Object Detection Results</h1>
+    
+    <div class="results-container">
+        <div class="image-container">
+            <h2>Original Image</h2>
+            <img src="{{ original_image }}" alt="Original Image">
+        </div>
+        
+        <div class="image-container">
+            <h2>Detected Objects</h2>
+            <img src="{{ annotated_image }}" alt="Annotated Image">
+        </div>
+    </div>
+    
+    <div class="objects-list">
+        <h2>Detected Objects ({{ results|length }})</h2>
+        
+        {% if results %}
+            {% for obj in results %}
+            <div class="object-item">
+                <span class="object-label">{{ obj.label }}</span>
+                <span class="confidence">Confidence: {{ obj.confidence }}</span>
+                <div>Bounding box: [{{ obj.bbox[0] }}, {{ obj.bbox[1] }}, {{ obj.bbox[2] }}, {{ obj.bbox[3] }}]</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No objects detected in the image.</p>
+        {% endif %}
+    </div>
+    
+    <a href="/" class="button">Try another image</a>
+</body>
+</html>
